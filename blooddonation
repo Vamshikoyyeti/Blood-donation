@@ -1,0 +1,173 @@
+from tkinter import *
+from csv import *
+from tkinter import messagebox,ttk
+import time
+def check(e1,e2,e3):
+    u1=e1.get()
+    p1=e2.get()
+    p2=e3.get()
+    if p1==p2:
+        save(u1,p1)
+        print("ABC")
+def check2(e1,e2):
+    flag=False
+    user=e1.get()
+    pas=e2.get()
+    with open("data.csv",'r') as f:
+        r=reader(f)
+        for i in r:
+            if i[0]==user and i[1]==pas:
+               page2()
+               flag=False
+               break
+            else:
+                flag=True
+        if (flag):
+            messagebox.showinfo('',"Incorrect Details")
+       
+       
+def save(u1,p1):
+    with open("data.csv",'a+',newline='') as f:
+        w=writer(f)
+        l=[u1,p1]
+        w.writerow(l)
+        page2()
+def login():
+    f=Frame(root,bg="skyblue")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    l=Label(f,text="Username",bg="white",font=("Arial",15))
+    l.place(x=20,y=60)
+    e1=Entry(bg="white",font=("Arial",15))
+    e1.place(x=150,y=60)
+    l2=Label(f,text="Password",bg="white",font=("Arial",15))
+    l2.place(x=20,y=100)
+    e2=Entry(bg="white",show="*",font=("Arial",15))
+    e2.place(x=150,y=100)
+    b1=Button(root,text="Login",bg="green",font=("Arial",15),bd=3,command=lambda:check2(e1,e2))
+    b1.place(x=150,y=170)
+    root.mainloop()
+def savedonor(e1,e2,e3):
+    name=e1.get()
+    btype=e2.get()
+    age=e3.get()
+    l=[name,btype,age]
+    with open("donordata.csv","a",newline='') as f:
+        w=writer(f)
+        w.writerow(l)
+    page4()
+def checkblood(e1,e2):
+    flag=False
+    name=e1.get()
+    btype=e2.get()
+    with open("donordata.csv",'r') as f:
+        r=reader(f)
+        for i in r:
+            print(i)
+            if i[1]==btype:
+                page3()
+                flag=False
+                break
+            else:
+                flag=True
+        if(flag):
+            page5()
+   
+def page5():
+    f=Frame(root,bg="white")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    l=Label(f,text="Requried Blood type is not available !!!",bg="white",font=("Arial",15))
+    l.place(x=20,y=60)
+    b1=Button(f,text="EXIT",bg="white",font=("Arial",15),bd=3,command=root.destroy)
+    b1.place(x=80,y=350)
+    root.mainloop()
+def page3():
+    f=Frame(root,bg="white")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    l=Label(f,text="Requried Blood type is available !!!",bg="white",font=("Arial",15))
+    l.place(x=20,y=60)
+    b1=Button(f,text="EXIT",bg="white",font=("Arial",15),bd=3,command=root.destroy)
+    b1.place(x=80,y=350)
+    root.mainloop()
+def page4():
+    f=Frame(root,bg="white")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    l=Label(f,text="Thank you for Donating !!!",bg="white",font=("Arial",15))
+    l.place(x=20,y=60)
+    b1=Button(f,text="EXIT",bg="white",font=("Arial",15),bd=3,command=root.destroy)
+    b1.place(x=80,y=350)
+    root.mainloop()
+def reciever():
+    f=Frame(root,bg="white")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    l=Label(f,text="Name",bg="white",font=("Arial",15))
+    l.place(x=20,y=60)
+    e1=Entry(bg="white",font=("Arial",15))
+    e1.place(x=150,y=60)
+    l2=Label(f,text="Blood Type",bg="white",font=("Arial",15))
+    l2.place(x=20,y=100)
+    n=StringVar()
+    btype=ttk.Combobox(f,width=10,textvariable=n)
+    btype['values']=("O+","B+","AB+","A+","A-","B-","AB-","O-")
+    btype.current()
+    btype.place(x=150,y=100)
+    b1=Button(root,text="Submit",bg="white",font=("Arial",15),bd=3,command=lambda:checkblood(e1,btype))
+    b1.place(x=150,y=170)
+    root.mainloop()
+def donor():
+    f=Frame(root,bg="white")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    l=Label(f,text="Name",bg="white",font=("Arial",15))
+    l.place(x=20,y=60)
+    e1=Entry(bg="white",font=("Arial",15))
+    e1.place(x=150,y=60)
+    n = StringVar()
+    l2=Label(f,text="Blood Type",bg="white",font=("Arial",15))
+    l2.place(x=20,y=100)
+    btype=ttk.Combobox(f,width=10,textvariable=n)
+    btype['values']=("O+","B+","AB+","A+","A-","B-","AB-","O-")
+    btype.current()
+    btype.place(x=150,y=100)
+    l3=Label(f,text="Age",bg="white",font=("Arial",15))
+    l3.place(x=20,y=140)
+    e3=Entry(bg="white",font=("Arial",15))
+    e3.place(x=150,y=140)
+    b1=Button(root,text="Submit",bg="white",font=("Arial",15),bd=3,command=lambda:savedonor(e1,btype,e3))
+    b1.place(x=150,y=170)
+    root.mainloop()
+def page2():
+    f=Frame(root,bg="white")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    b1=Button(f,text="Donor",bg="white",font=("Arial",15),bd=3,command=donor)
+    b1.place(x=150,y=70)
+    b2=Button(f,text="Reciever",bg="white",font=("Arial",15),bd=3,command=reciever)
+    b2.place(x=150,y=120)
+    root.mainloop()
+def signup():
+    f=Frame(root,bg="white")
+    f.place(x=0,y=0,relwidth=2,relheight=2)
+    l=Label(f,text="Username",bg="white",font=("Arial",15))
+    l.place(x=20,y=60)
+    e1=Entry(bg="white",font=("Arial",15))
+    e1.place(x=150,y=60)
+    l2=Label(f,text="Password",bg="white",font=("Arial",15))
+    l2.place(x=20,y=100)
+    e2=Entry(bg="white",show="*",font=("Arial",15))
+    e2.place(x=150,y=100)
+    l3=Label(f,text="Confirm Password",bg="white",font=("Arial",15))
+    l3.place(x=20,y=140)
+    e3=Entry(bg="white",font=("Arial",15),show="*")
+    e3.place(x=190,y=140)
+    b1=Button(root,text="Sign-up",bg="white",font=("Arial",15),bd=3,command=lambda:check(e1,e2,e3))
+    b1.place(x=150,y=170)
+    root.mainloop()
+   
+root=Tk()
+root.config(bg="skyblue")
+root.geometry("400x400")
+l=Label(root,text="Blood Donation",bg="skyblue",font=("Arial",25))
+l.place(x=100,y=10)
+b1=Button(root,text="Sign-up",bg="white",font=("Arial",15),bd=3,command=signup)
+b1.place(x=150,y=70)
+b2=Button(root,text="Login",bg="green",font=("Arial",15),bd=3,command=login)
+b2.place(x=160,y=120)
+root.mainloop()
